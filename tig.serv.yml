@@ -21,3 +21,31 @@ services:
     mem_limit: 500M
     mem_reservation: 500m
     cpus: 1
+
+  grafana:
+    env_file: .env
+    image: grafana/grafana:latest
+    ports:
+      - "3000:${grafana_port}"
+    volumes:
+      - grafana:/var/lib/grafana
+    links:
+      - influx
+    restart: always
+    # healthcheck:
+    #   test: pg_isready -U ${DB_USER}
+    #   interval: 2s
+    #   timeout: 3s
+    #   retries: 40
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "1"
+    mem_limit: 500M
+    mem_reservation: 500m
+    cpus: 1
+
+volumes:
+  grafana:
+    name: grafana
+    external: true
