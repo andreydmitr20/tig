@@ -45,6 +45,27 @@ services:
     mem_reservation: 500m
     cpus: 1
 
+  telegraf:
+    env_file: .env
+    image: telegraf:latest
+    network_mode: "host"
+    volumes:
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: always
+    # healthcheck:
+    #   test: pg_isready -U ${DB_USER}
+    #   interval: 2s
+    #   timeout: 3s
+    #   retries: 40
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "1"
+    mem_limit: 500M
+    mem_reservation: 500m
+    cpus: 1
+
 volumes:
   grafana:
     name: grafana
