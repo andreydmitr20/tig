@@ -1,0 +1,23 @@
+version: "3.8"
+services:
+  influx:
+    env_file: .env
+    image: influxdb:latest
+    ports:
+      - "8086:${influx_port}"
+    volumes:
+      - ./influx/influxdb:/var/lib/influxdb2
+      - ./influx/config:/etc/influxdb
+    restart: always
+    # healthcheck:
+    #   test: pg_isready -U ${DB_USER}
+    #   interval: 2s
+    #   timeout: 3s
+    #   retries: 40
+    logging:
+      options:
+        max-size: "10m"
+        max-file: "1"
+    mem_limit: 500M
+    mem_reservation: 500m
+    cpus: 1
