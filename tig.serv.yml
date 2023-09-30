@@ -4,10 +4,10 @@ services:
     env_file: .env
     image: influxdb:latest
     ports:
-      - "8086:${influx_port}"
+      - "${influx_port}:8086"
     volumes:
       - ./influx/influxdb:/var/lib/influxdb2
-      - ./influx/config:/etc/influxdb
+      - ./influx/config:/etc/influxdb:ro
     restart: always
     # healthcheck:
     #   test: pg_isready -U ${DB_USER}
@@ -26,7 +26,7 @@ services:
     env_file: .env
     image: grafana/grafana:latest
     ports:
-      - "3000:${grafana_port}"
+      - "${grafana_port}:3000"
     volumes:
       - grafana:/var/lib/grafana
     links:
@@ -50,7 +50,7 @@ services:
     image: telegraf:latest
     network_mode: "host"
     volumes:
-      - ./telegraf.conf:/etc/telegraf/telegraf.conf
+      - ./telegraf.conf:/etc/telegraf/telegraf.conf:ro
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
     # healthcheck:
